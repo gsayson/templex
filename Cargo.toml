@@ -1,0 +1,11 @@
+[package]
+name = "templex"
+version = "0.1.0"
+edition = "2021"
+
+[dependencies]
+promptuity = "0.0.5"
+clap = { version = "4.5.21", features = ["color", "suggestions", "derive"] }
+directories = "5.0.1"
+serde = { version = "1.0.215", features = ["std", "derive"] }
+toml = { version = "0.8.19" }
