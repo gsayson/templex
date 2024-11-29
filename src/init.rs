@@ -38,7 +38,6 @@ pub(crate) fn cli_init(template: Option<PathBuf>) -> Result<(), promptuity::Erro
         p.log("")?;
         p.info("To cancel this operation, press Ctrl+C. Otherwise, answer the following questions.")?;
         p.log("")?;
-        let title = p.prompt(Input::new("What is your project's title?").with_placeholder("New project"))?;
         let folder_name = p.prompt(Input::new("What would you like your project's folder name to be?").with_placeholder("new-project"))?;
 
         let mut proj_dir = env::current_dir()?;
@@ -62,7 +61,7 @@ pub(crate) fn cli_init(template: Option<PathBuf>) -> Result<(), promptuity::Erro
             p.success(format!("File {} copied over.", file.display()))?;
         }
         p.log("")?;
-        p.with_outro(format!("Project '{title}' created in '{}'.", proj_dir.display())).finish()?;
+        p.with_outro(format!("Project created in '{}'.", proj_dir.display())).finish()?;
     } else {
         return p.with_outro("No such template exists; terminating.").finish()
     }
