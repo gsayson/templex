@@ -5,7 +5,7 @@ use std::path::{Path, PathBuf};
 use std::sync::LazyLock;
 use serde::Deserialize;
 
-static TEMPLEX_DIRECTORY: LazyLock<PathBuf> = LazyLock::new(|| {
+pub(crate) static TEMPLEX_DIRECTORY: LazyLock<PathBuf> = LazyLock::new(|| {
     let mut dir = directories::UserDirs::new().unwrap().home_dir().to_owned();
     dir.push(".templex/");
     if let Ok(exists) = fs::exists(&dir) {
@@ -37,7 +37,13 @@ pub fn read_template(config_file: impl AsRef<Path>) -> Result<TemplateConfigurat
 
 pub fn get_templates() -> Vec<String> {
     let mut vec = vec![];
-    if let Ok(read_dir) = TEMPLEX_DIRECTORY.read_dir() {
+    let mut x = TEMPLEX_DIRECTORY.clone();
+    x.push("templates/");
+    if !x.exists() {
+        let _ = fs::create_dir_all(&x);
+        return vec;
+    }
+    if let Ok(read_dir) = x.read_dir() {
         for dir in read_dir {
             if let Ok(dir) = dir {
                 vec.push(dir.file_name().to_string_lossy().to_string());

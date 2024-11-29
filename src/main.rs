@@ -3,6 +3,7 @@ mod template;
 
 use clap::ColorChoice;
 use clap::{Parser, Subcommand};
+use crate::template::TEMPLEX_DIRECTORY;
 
 /// Templex is a tool to manage LaTeX projects
 #[derive(Parser)]
@@ -31,6 +32,12 @@ fn main() -> Result<(), Box<dyn std::error::Error>> {
             init::cli_init(template::resolve_template(template)).map_err(|err| err.into())
         },
         Commands::List => {
+            let mut x = TEMPLEX_DIRECTORY.clone();
+            x.push("templates/");
+            println!("Reading templates from {}", x.display());
+            for i in template::get_templates() {
+                println!("--> {i}")
+            }
             Ok(())
         }
     }
